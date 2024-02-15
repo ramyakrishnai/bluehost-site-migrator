@@ -20,7 +20,7 @@ Vue.mixin({
 const router = new VueRouter({routes});
 
 window.BHSiteMigrator.App = new Vue({
-	el: '#bluehost-site-migrator',
+	el: `#${process.env.MIGRATOR_URL}`,
 	data: {
 		isCompatible: window.BHSiteMigrator.isCompatible || null,
 		isComplete: window.BHSiteMigrator.isComplete || null,

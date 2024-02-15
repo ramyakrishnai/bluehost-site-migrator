@@ -9,7 +9,7 @@
 			</p>
 
 			<p>
-				{{__("Call us at 888-401-4678", 'bluehost-site-migrator')}}
+				{{__("Call us at ", 'bluehost-site-migrator')}} {{customerCare}}
 			</p>
 
 			<router-link class="button" to="/compatible" tag="button">{{__("Try Again", 'bluehost-site-migrator')}}</router-link>
@@ -26,7 +26,8 @@
 	export default {
 		data() {
 			return {
-				imageSrc: require('@/images/moving-truck-with-cones.svg')
+				imageSrc: require(process.env.VUE_APP_MOVING_TRUCK_CONES),
+				customerCare: process.env.VUE_APP_CUSTOMER_CARE
 			}
 		}
 	}

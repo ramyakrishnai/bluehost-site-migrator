@@ -18,7 +18,7 @@
 	export default {
 		data() {
 			return {
-				imageSrc: require('@/images/computer-transfer.svg')
+				imageSrc: require(process.env.VUE_APP_COMPUTER_TRANSFER)
 			}
 		}
 	}

@@ -5,6 +5,7 @@ const browsers = require('@wordpress/browserslist-config');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const {VueLoaderPlugin} = require('vue-loader');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = function (env, options) {
 
@@ -132,6 +133,7 @@ module.exports = function (env, options) {
 				filename: `${ paths.css }[name]${ extPrefix }.css`,
 			}),
 			new VueLoaderPlugin(),
+			new Dotenv()
 		],
 		devtool: 'source-map',
 	};

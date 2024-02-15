@@ -12,7 +12,7 @@
 				{{__("This can happen if you have a multisite, alternate directory structures, or certain themes or plugins. The transfer might require some extra steps, or we might need to look at other options.", 'bluehost-site-migrator')}}
 			</p>
 
-			<p>{{__("Give us a call at 888-401-4678.", 'bluehost-site-migrator')}}</p>
+			<p>{{__("Give us a call at ", 'bluehost-site-migrator')}} {{customerCare}}.</p>
 
 		</div>
 
@@ -27,7 +27,8 @@
 	export default {
 		data() {
 			return {
-				imageSrc: require('@/images/computer-transfer-broken.svg')
+				imageSrc: require(process.env.VUE_APP_COMPUTER_TRANSFER_BROKEN),
+				customerCare: process.env.VUE_APP_CUSTOMER_CARE
 			}
 		}
 	}

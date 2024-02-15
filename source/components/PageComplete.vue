@@ -84,7 +84,7 @@ export default {
     return {
       closeIcon: require('@/images/close.svg'),
       countryCode: window.BHSiteMigrator.countryCode,
-      imageSrc: require('@/images/moving-truck-unloaded.svg'),
+      imageSrc: require(process.env.VUE_APP_MOVING_TRUCK_UNLOADED),
       loginUrl: '',
       message: '',
       showMessage: false,

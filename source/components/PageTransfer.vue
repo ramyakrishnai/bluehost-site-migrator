@@ -29,7 +29,7 @@
 		components: {ProgressBar},
 		data() {
 			return {
-				imageSrc: require('@/images/boxed-up.svg'),
+				imageSrc: require(process.env.VUE_APP_BOXED_UP),
 				isComplete: null,
 				message: __('Preparing to generate package files...', 'bluehost-site-migrator'),
 				progressPercentage: 100,

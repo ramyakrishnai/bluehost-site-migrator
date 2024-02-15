@@ -1,7 +1,7 @@
 <template>
   <div class="page --check-compatibility">
     <div class="content">
-      <h1>{{ __("Bluehost Site Migrator", 'bluehost-site-migrator') }}</h1>
+      <h1>{{title}}{{ __(" Site Migrator", 'bluehost-site-migrator') }}</h1>
       <p><strong>{{ __("Let's get this truck rolling:", 'bluehost-site-migrator') }}</strong></p>
       <p>{{ __("A website compatibility check needs to be performed before the", 'bluehost-site-migrator') }}</p>
       <p>{{ __("transfer process can begin to verify that your website can be transferred.", 'bluehost-site-migrator') }}</p>
@@ -30,11 +30,12 @@ export default {
   data() {
     return {
       geo: {},
-      imageSrc: require('@/images/moving-truck-loaded.svg'),
+      imageSrc: require(process.env.VUE_APP_MOVING_TRUCK_LOADED),
       isButtonDisabled: false,
       isCompatible: null,
       isSpinnerVisible: false,
-      message: ''
+      message: '',
+      title: process.env.VUE_APP_TITLE
     }
   },
   computed: {
