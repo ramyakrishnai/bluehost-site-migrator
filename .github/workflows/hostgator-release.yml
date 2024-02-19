@@ -1,0 +1,148 @@
+name: Package Plugin
+ 
+on:
+  release:
+    types:
+      - published
+      - updated
+ 
+jobs:
+  deploy:
+    name: On Release
+    runs-on: ubuntu-latest
+    steps:
+ 
+      - name: Checkout
+        uses: actions/checkout@v2
+ 
+      - name: Setup Workflow Context
+        id: workflow
+        working-directory: ${{ runner.temp }}
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir dist
+          echo ::set-output name=DIST::${PWD}/dist
+          echo ::set-output name=PACKAGE::${REPO##*/}
+ 
+      - name: PHP version
+        run: php --version
+ 
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+ 
+      - name: Node version
+        run: node --version
+ 
+      - name: NPM version
+        run: npm --version
+ 
+      - name: Set Plugin name
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_PLUGIN
+          replace: 'Hostgator Site Plugin'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Author
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_AUTHOR
+          replace: 'Hostgator'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Author Url
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_AUTHOR_URL
+          replace: 'https://www.hostgator.com/'
+          include: bluehost-site-migrator.php
+          
+      - name: Set Plugin URL
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_URL
+          replace: 'https://wordpress.org/plugins/hostgator-site-migrator'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Description
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_DESCRIPTION
+          replace: 'Quickly and easily migrate your website to Hostgator.'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Domain
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_DOMAIN
+          replace: 'hostgator-site-migrator'
+          include: bluehost-site-migrator.php
+ 
+      - name: Create .env
+        run: mv hostgator.txt .env
+ 
+      - name: Get npm cache directory
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm config get cache)"
+ 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+ 
+      - name: npm install
+        run: npm install
+ 
+      - name: Run prebuild
+        run: node ./source/js/envConfig.js
+      
+      - name: Run build
+        run: npx webpack && npx webpack --mode=production
+ 
+      - name: Generate .pot file
+        run: npm run i18n
+ 
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+ 
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+ 
+      - name: Cache Composer vendor directory
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+ 
+      - name: Install PHP Dependencies
+        run: composer install --no-progress --no-dev --optimize-autoloader
+ 
+      - name: Prepare files
+        run: rsync -r --exclude-from=.distignore . ${{ steps.workflow.outputs.DIST }}/"Hostgator-site-migrator"
+ 
+      - name: List Files
+        working-directory: ${{ steps.workflow.outputs.DIST }}
+        run: find .
+ 
+      - name: Create Zip
+        working-directory: ${{ steps.workflow.outputs.DIST }}
+        run: zip -r hostgator-site-migrator.zip .
+        
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets{?name,label}
+          asset_path: ${{ steps.workflow.outputs.DIST }}/${{ steps.workflow.outputs.PACKAGE }}.zip
+          asset_name: ${{ steps.workflow.outputs.PACKAGE }}.zip
+          asset_content_type: application/zip

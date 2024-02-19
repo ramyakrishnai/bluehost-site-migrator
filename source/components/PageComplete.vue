@@ -40,7 +40,7 @@
             target="_blank"
             rel="noreferrer noopener"
         >
-          {{ __("Login to Bluehost", 'bluehost-site-migrator') }}
+         {{bluehost_login}}
         </a>
       </p>
 
@@ -92,6 +92,7 @@ export default {
       options: [],
       regions: {},
       signupUrl: '',
+      bluehost_login: process.env.VUE_APP_LOGIN
     }
   },
   watch: {
