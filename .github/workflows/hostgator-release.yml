@@ -43,7 +43,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         with:
           find: SITE_MIGRATOR_PLUGIN
-          replace: 'Hostgator Site Plugin'
+          replace: 'Hostgator Site Migrator'
           include: bluehost-site-migrator.php
  
       - name: Set Plugin Author
