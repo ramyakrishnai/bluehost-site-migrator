@@ -10,7 +10,7 @@ class BH_Site_Migrator_Admin_Page {
 	 */
 	public static function add_menu_page() {
 		add_menu_page(
-			__( 'Hostgator Site Migrator', 'bluehost-site-migrator' ),
+			getenv( 'VUE_APP_TITLE' ) . __( ' Site Migrator', 'bluehost-site-migrator' ),
 			__( 'Site Migrator', 'bluehost-site-migrator' ),
 			'manage_options',
 			getenv( 'MIGRATOR_URL' ),
