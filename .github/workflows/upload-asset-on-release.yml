@@ -39,6 +39,48 @@ jobs:
       - name: NPM version
         run: npm --version
 
+      - name: Set Plugin name
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_PLUGIN
+          replace: 'Bluehost Site Plugin'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Author
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_AUTHOR
+          replace: 'Bluehost'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Author Url
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_AUTHOR_URL
+          replace: 'https://www.bluehost.com/'
+          include: bluehost-site-migrator.php
+          
+      - name: Set Plugin URL
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_URL
+          replace: 'https://wordpress.org/plugins/bluehost-site-migrator'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Description
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_DESCRIPTION
+          replace: 'Quickly and easily migrate your website to Bluehost.'
+          include: bluehost-site-migrator.php
+ 
+      - name: Set Plugin Domain
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: SITE_MIGRATOR_DOMAIN
+          replace: 'bluehost-site-migrator'
+          include: bluehost-site-migrator.php
+
       - name: Get npm cache directory
         id: npm-cache
         run: echo "::set-output name=dir::$(npm config get cache)"

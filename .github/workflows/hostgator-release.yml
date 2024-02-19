@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir dist
           echo ::set-output name=DIST::${PWD}/dist
-          echo ::set-output name=PACKAGE::${REPO##*/}
+          echo ::set-output name=hostgator-site-migrator
  
       - name: PHP version
         run: php --version
