@@ -24,8 +24,8 @@ class BH_Site_Migrator_Admin_Page {
 	 */
 	public static function render_page() {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( 'bluehost-site-migrator', plugins_url( '/assets/css/app.css', __DIR__ ), array(), BH_SITE_MIGRATOR_VERSION );
-		wp_enqueue_script( 'bluehost-site-migrator', plugins_url( '/assets/js/app.js', __DIR__ ), array(), BH_SITE_MIGRATOR_VERSION, true );
+		wp_enqueue_style( 'bluehost-site-migrator', plugins_url( '/assets/css/app{$suffix}.css', __DIR__ ), array(), BH_SITE_MIGRATOR_VERSION );
+		wp_enqueue_script( 'bluehost-site-migrator', plugins_url( '/assets/js/app{$suffix}.js', __DIR__ ), array(), BH_SITE_MIGRATOR_VERSION, true );
 		wp_localize_script(
 			'bluehost-site-migrator',
 			'BHSiteMigrator',
